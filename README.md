@@ -15,6 +15,7 @@ Usage: pingpong [OPTIONS] -- cmd1, cmd2, ...
   -log="": Directory for logging
   -time=true: Prepend time before each line
 ```
+Each `cmd` is fed into `bash -c` to be executed.
 
 ## Example
 
