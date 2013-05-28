@@ -24,6 +24,7 @@ func startProcess(cmd string, ch chan<- []byte, callback func(error)) {
 	if "" != logDir {
 		var err error
 		logging, err = os.Create(path.Join(logDir, strconv.Itoa(command.Process.Pid)))
+		fmt.Fprintf(logging, "Command: %s\n\n", cmd)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Open file error: %v\n", err)
 			logging = nil
