@@ -8,8 +8,6 @@ import (
 	"time"
 )
 
-const MinimumColumnWidth = 80
-
 type renderer struct {
 	printTime bool
 	textWidth int
