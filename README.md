@@ -85,3 +85,6 @@ $ pingpong -log="./logs" "go run main.go server" "go run main.go client 1" "go r
 Screenshot:
 
 ![](https://raw.github.com/songgao/pingpong/403a6c9a2730100e938228e69b69fedcd0167688/images/screenshot.png)
+
+## License
+[BSD 3-Clause License](http://opensource.org/licenses/BSD-3-Clause)
