@@ -138,6 +138,9 @@ func slice(str []byte, width int) [][]byte {
 	} else {
 		ret_len = len(str)/width + 1
 	}
+	if ret_len == 0 {
+		return nil
+	}
 	ret := make([][]byte, ret_len)
 	for i := 0; i < ret_len-1; i++ {
 		ret[i] = str[width*i : width*(i+1)]
