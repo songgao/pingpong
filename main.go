@@ -4,6 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"os/signal"
+	"syscall"
 )
 
 var (
@@ -33,18 +35,35 @@ func main() {
 
 func run(cmds []string) {
 	r := NewRender(len(cmds), printTime)
+	processes := make([]*os.Process, len(cmds))
 	for i := 0; i < len(cmds); i++ {
+		i_ := i
 		cmd := cmds[i]
-		startProcess(cmd, r.In[i], func(err error) {
+		processes[i] = startProcess(cmd, r.In[i], func(err error) {
 			msg := ""
 			if err == nil {
 				msg = fmt.Sprintf("Command [%s] exited with code 0", cmd)
 			} else {
 				msg = fmt.Sprintf("Command [%s] exited with error %v", cmd, err)
 			}
-			r.PrintStatus([]byte(msg), i)
+			r.PrintStatus([]byte(msg), i_)
 		})
 	}
+
+	// catch Interrupt and Kill signals, making sure when pingpong exits all sub-processes exit.
+	ch := make(chan os.Signal)
+	signal.Notify(ch, syscall.SIGTERM, os.Interrupt)
+	go func() {
+		sig := <-ch
+		fmt.Println() // prevent "^C" from ruining output
+		r.PrintStatus([]byte(fmt.Sprintf("Got signal %v; killing processes...", sig)), -1)
+		for _, proc := range processes {
+			if proc != nil {
+				proc.Kill()
+			}
+		}
+	}()
+
 	fmt.Println("")
 	r.PrintLegend(cmds)
 	fmt.Println("")

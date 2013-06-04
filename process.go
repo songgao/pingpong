@@ -11,13 +11,13 @@ import (
 	"sync"
 )
 
-func startProcess(cmd string, ch chan<- []byte, callback func(error)) {
+func startProcess(cmd string, ch chan<- []byte, callback func(error)) *os.Process {
 	command := exec.Command("/bin/bash", "-c", cmd)
 	stdout, stdoutErr := command.StdoutPipe()
 	stderr, stderrErr := command.StderrPipe()
 	if stdoutErr != nil || stderrErr != nil {
 		fmt.Fprintf(os.Stderr, "Error getting stdout/stderr of the command: %v, %v\n", stdoutErr, stderrErr)
-		return
+		return nil
 	}
 	command.Start()
 	var logging io.WriteCloser
@@ -56,4 +56,5 @@ func startProcess(cmd string, ch chan<- []byte, callback func(error)) {
 		close(ch)
 		callback(command.Wait())
 	}()
+	return command.Process
 }
