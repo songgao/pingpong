@@ -16,9 +16,9 @@ var (
 
 func init() {
 	flag.BoolVar(&printTime, "time", true, "Prepend time before each line")
-	flag.StringVar(&logDir, "log", "", "Directory for logging")
-	flag.BoolVar(&help, "h", false, "Print help message; an empty string means no logging")
-	flag.BoolVar(&help, "help", false, "Print help message; an empty string means no logging")
+	flag.StringVar(&logDir, "log", "", "Directory for logging; an empty string means no logging")
+	flag.BoolVar(&help, "h", false, "Print help message")
+	flag.BoolVar(&help, "help", false, "Print help message")
 }
 
 func main() {
