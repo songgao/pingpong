@@ -9,6 +9,7 @@ import (
 )
 
 type renderer struct {
+	tab       string
 	printTime bool
 	textWidth int
 	numIn     int
@@ -25,8 +26,11 @@ type item struct {
 	IsStatus bool
 }
 
-func NewRender(numIn int, printTime bool) *renderer {
+func NewRender(numIn int, printTime bool, tabSize int) *renderer {
 	r := new(renderer)
+	for i := 0; i < tabSize; i++ {
+		r.tab = r.tab + " "
+	}
 	r.printTime = printTime
 	r.textWidth = getTermWidth() - 9 - numIn - 1
 	r.numIn = numIn
@@ -98,7 +102,7 @@ func (r *renderer) print(it item) {
 	if it.Content[len(it.Content)-1] == '\n' {
 		it.Content = it.Content[:len(it.Content)-1]
 	}
-	lines := slice(it.Content, r.textWidth)
+	lines := slice(r.expand_tabs(it.Content), r.textWidth)
 	starting := true
 	for _, line := range lines {
 		r.printHeader(os.Stdout, it.Index, starting)
@@ -147,5 +151,17 @@ func slice(str []byte, width int) [][]byte {
 	}
 	ret[ret_len-1] = make([]byte, width)
 	copy(ret[ret_len-1], str[width*(ret_len-1):])
+	return ret
+}
+
+func (r *renderer) expand_tabs(str []byte) []byte {
+	ret := make([]byte, 0, len(str))
+	for _, c := range str {
+		if c == '\t' {
+			ret = append(ret, r.tab...)
+		} else {
+			ret = append(ret, c)
+		}
+	}
 	return ret
 }

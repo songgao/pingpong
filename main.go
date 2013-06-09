@@ -12,6 +12,7 @@ var (
 	printTime bool
 	logDir    string
 	help      bool
+	tabSize   int
 )
 
 func init() {
@@ -19,6 +20,7 @@ func init() {
 	flag.StringVar(&logDir, "log", "", "Directory for logging; an empty string means no logging")
 	flag.BoolVar(&help, "h", false, "Print help message")
 	flag.BoolVar(&help, "help", false, "Print help message")
+	flag.IntVar(&tabSize, "tab", 4, "Set tab size")
 }
 
 func main() {
@@ -34,7 +36,7 @@ func main() {
 }
 
 func run(cmds []string) {
-	r := NewRender(len(cmds), printTime)
+	r := NewRender(len(cmds), printTime, tabSize)
 	processes := make([]*os.Process, len(cmds))
 	for i := 0; i < len(cmds); i++ {
 		i_ := i
