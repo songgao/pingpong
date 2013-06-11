@@ -26,7 +26,7 @@ func rainbowFG(text string, index int) string {
 }
 
 func rainbowBG(text string, index int) string {
-	return sgrBG + rainbowColors[index%len(rainbowColors)] + text + sgrRESET
+	return sgrBG + rainbowColors[index%len(rainbowColors)] + sgrFG + rainbowColors[index%len(rainbowColors)] + text + sgrRESET
 }
 
 func writeBold(w io.Writer, content []byte) {

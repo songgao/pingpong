@@ -127,7 +127,7 @@ func (r *renderer) printHeader(w io.Writer, indexIn int, starting bool) {
 	}
 	for i := 0; i < r.numIn; i++ {
 		if indexIn == i {
-			fmt.Fprintf(w, rainbowBG(" ", i))
+			fmt.Fprintf(w, rainbowBG("*", i))
 		} else {
 			fmt.Fprintf(w, rainbowFG("|", i))
 		}
